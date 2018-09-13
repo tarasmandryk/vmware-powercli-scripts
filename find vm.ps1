@@ -1,11 +1,16 @@
-# Before executing this script run "01. connect to multiple vCSs.ps1"
 ####################################################################################
 # Variables
 ####################################################################################
 
+# Read credentials from file
+$cred = Get-VICredentialStoreItem -file MyCredentialsFile.xml
+# Read VMs list from file vm_list.csv
 $vmList = Get-Content vm_list.csv
+# Read vCS list from file vCenterServers_list.csv
+$vCSsList = Get-Content vCenterServers_list.csv
+# Report will be output here
 $outputfile = "vm-report.csv"
-#Array for VMs' data
+# Array for VMs' data
 $allvminfo = @()
 
 ####################################################################################
@@ -14,8 +19,22 @@ function Drawline {
 }
 ####################################################################################
 
+# Connect to all vCenter Servers from the list
+foreach ($vc in $vCSsList) 
+{     
+	if( Connect-VIServer -server $vc -Protocol https -User $cred.User -Password $cred.Password -ErrorAction Ignore)
+	{        
+		Write-Host "vCenter $vc Connected"  -ForegroundColor Cyan     
+	}
+	else
+	{
+		Write-Host "Failed to Connect vCenter $vc"  -ForegroundColor Cyan
+	}    
+}
+
 Drawline
 
+# Get info for each VM from the list
 foreach ($vmName in $vmList) 
 {
 	$vminfo = "" | Select VM_Name, vCS_Name, Cluster
@@ -38,3 +57,9 @@ foreach ($vmName in $vmList)
 
 #Output data to file
 $allvminfo | Select VM_Name, vCS_Name, Cluster | Export-Csv $outputfile -noTypeInformation
+
+#Disconnect from all vCenter Servers
+foreach ($vc in $vCSsList) 
+{     
+	Disconnect-VIServer -Server $vc -confirm:$FALSE   
+}
