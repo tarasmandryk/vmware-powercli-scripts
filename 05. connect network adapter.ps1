@@ -1,22 +1,26 @@
+####################################################################################
+# Variables
+####################################################################################
 $vCenterName = "vspap090.man.cosng.net"
-$Username = "MGMT\E215667"
-$Password = "Game0N!2323"
 
-Connect-VIServer -Server $vCenterName -User $Username -Password $Password
+# Read credentials from file
+$cred = Get-VICredentialStoreItem -file MyCredentialsFile.xml
 
-Get-VM EIKTS177 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:b8:47:6b" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS178 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:b8:2e:64" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS008 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:10:0d" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS030 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:10:2b" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS022 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:10:23" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS023 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:10:24" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS024 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:10:25" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS025 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:10:26" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS026 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:10:27" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS029 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:10:2a" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS921 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:b8:0b:a4" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS923 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:b8:72:32" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
-Get-VM EIKTS004 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:10:08" } | Set-NetworkAdapter -NetworkName "1930_vSwitch1" -Confirm:$false -RunAsync
+# Connect to vCenter Server
+Connect-VIServer -server $vCenterName -Protocol https -User $cred.User -Password $cred.Password
+
+#Connect-VIServer -Server $vCenterName -User $Username -Password $Password
+
+Get-VM GFJNSGW001 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:b8:36:9b" } | Set-NetworkAdapter -NetworkName "1041_vSwitch1" -Confirm:$false -RunAsync
+Get-VM GFJNSGW001 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:b8:55:4f" } | Set-NetworkAdapter -NetworkName "1045_vSwitch1" -Confirm:$false -RunAsync
+Get-VM GFJNSGW001 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:b8:63:51" } | Set-NetworkAdapter -NetworkName "3135_vSwitch1" -Confirm:$false -RunAsync
+Get-VM P-114-250-001 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:0c:23" } | Set-NetworkAdapter -NetworkName "3758_vSwitch1" -Confirm:$false -RunAsync
+Get-VM P-114-250-001 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:0c:24" } | Set-NetworkAdapter -NetworkName "1409_vSwitch1" -Confirm:$false -RunAsync
+Get-VM P-147-270-006 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:0c:33" } | Set-NetworkAdapter -NetworkName "2907_vSwitch1" -Confirm:$false -RunAsync
+Get-VM P-147-270-006 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:0c:34" } | Set-NetworkAdapter -NetworkName "3758_vSwitch1" -Confirm:$false -RunAsync
+Get-VM SAMAP001 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:1b:4e" } | Set-NetworkAdapter -NetworkName "868_vSwitch1" -Confirm:$false -RunAsync
+Get-VM SAMAP001 | Get-NetworkAdapter | Where {$_.MacAddress -eq "00:50:56:8e:3a:fe" } | Set-NetworkAdapter -NetworkName "3764_vSwitch1" -Confirm:$false -RunAsync
+
 
 Disconnect-VIServer -Server $vCenterName -confirm:$FALSE
 

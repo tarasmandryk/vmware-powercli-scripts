@@ -4,13 +4,13 @@
 $vCenterName = "vspap090.man.cosng.net"
 $StagingHost = "ucsesx1068.vmware.cosng.net"
 $VMFolder = "Migration"
-$Datastores = Get-datastore "Migrate-to-SL-20180907-DS-*"
-
 # Read credentials from file
 $cred = Get-VICredentialStoreItem -file MyCredentialsFile.xml
 
 # Connect to vCenter Server
 Connect-VIServer -server $vCenterName -Protocol https -User $cred.User -Password $cred.Password
+
+$Datastores = Get-datastore "Migrate-to-SL-20180918-DS-*"
 
 foreach($Datastore in Get-Datastore $Datastores) {
 	write "Processing $Datastore"
