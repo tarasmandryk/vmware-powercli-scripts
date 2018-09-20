@@ -10,7 +10,7 @@ $cred = Get-VICredentialStoreItem -file MyCredentialsFile.xml
 # Connect to vCenter Server
 Connect-VIServer -server $vCenterName -Protocol https -User $cred.User -Password $cred.Password
 
-$Datastores = Get-datastore "Migrate-to-SL-20180918-DS-*"
+$Datastores = Get-datastore "Migrate-to-SL-20180920-DS-*"
 
 foreach($Datastore in Get-Datastore $Datastores) {
 	write "Processing $Datastore"
